@@ -1,7 +1,7 @@
 {
   "name": "standards",
   "version": "1.0.0",
-  "description": "Connect Claude to your standards.new workspace: search, read and update CRM records, documents and files, and read the workspace schema.",
+  "description": "Connect Claude to your Standards workspace — CRM, documents and memory with a data model your team declares — to search, count, create and update records and file documents, with the rights of your role.",
   "author": {
     "name": "standards.new",
     "email": "contact@standards.new",
