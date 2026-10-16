@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "standards": {
+      "type": "http",
+      "url": "https://api.standards.new/v1/mcp"
+    }
+  }
+}

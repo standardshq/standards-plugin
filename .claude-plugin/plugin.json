@@ -1,0 +1,21 @@
+{
+  "name": "standards",
+  "version": "1.0.0",
+  "description": "Connect Claude to your standards.new workspace: search, read and update CRM records, documents and files, and read the workspace schema.",
+  "author": {
+    "name": "standards.new",
+    "email": "contact@standards.new",
+    "url": "https://standards.new"
+  },
+  "homepage": "https://docs.standards.new/docs/mcp",
+  "repository": "https://github.com/standardshq/standards-plugin",
+  "license": "MIT",
+  "keywords": [
+    "crm",
+    "erp",
+    "business-database",
+    "records",
+    "documents",
+    "mcp"
+  ]
+}

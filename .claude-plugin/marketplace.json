@@ -1,0 +1,15 @@
+{
+  "name": "standards",
+  "description": "Official standards.new plugins for Claude Code and Cowork.",
+  "owner": {
+    "name": "standards.new",
+    "email": "contact@standards.new"
+  },
+  "plugins": [
+    {
+      "name": "standards",
+      "source": "./",
+      "description": "Connect Claude to your standards.new workspace: records, documents, search and schema."
+    }
+  ]
+}
