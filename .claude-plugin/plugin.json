@@ -11,8 +11,6 @@
   "repository": "https://github.com/standardshq/standards-plugin",
   "privacyPolicyUrl": "https://standards.new/en/privacy",
   "termsOfServiceUrl": "https://standards.new/en/legal",
-  "documentationUrl": "https://docs.standards.new/docs/mcp",
-  "supportUrl": "https://standards.new/en/connect",
   "license": "MIT",
   "keywords": ["crm", "erp", "business-database", "records", "documents", "mcp"]
 }
