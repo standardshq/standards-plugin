@@ -9,6 +9,7 @@
   },
   "homepage": "https://docs.standards.new/docs/mcp",
   "repository": "https://github.com/standardshq/standards-plugin",
+  "privacyPolicyUrl": "https://standards.new/en/privacy",
   "license": "MIT",
   "keywords": ["crm", "erp", "business-database", "records", "documents", "mcp"]
 }
