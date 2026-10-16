@@ -10,12 +10,5 @@
   "homepage": "https://docs.standards.new/docs/mcp",
   "repository": "https://github.com/standardshq/standards-plugin",
   "license": "MIT",
-  "keywords": [
-    "crm",
-    "erp",
-    "business-database",
-    "records",
-    "documents",
-    "mcp"
-  ]
+  "keywords": ["crm", "erp", "business-database", "records", "documents", "mcp"]
 }
