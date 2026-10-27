@@ -1,6 +1,6 @@
 # Standards plugin for Claude
 
-[Standards](https://standards.new) is a business workspace — CRM, documents, drives, email, forms and AI agents in one app — whose data model each team declares for itself: contacts and deals, incidents and suppliers, or whatever the business runs on. This plugin connects Claude Code and Claude Cowork to your workspace, so Claude can search, count, create and update your records, read and file the documents attached to them, and use the workspace's memory, always with the rights of your role.
+[Standards](https://standards.new) is your company's collective intelligence: CRM, drive, email and meetings in one system of record, on a data model your team declares. This plugin connects Claude Code and Claude Cowork to your workspace, so Claude can search, count, create and update your records, read and file the documents attached to them, and use the workspace's memory, always with the rights of your role.
 
 ## Install
 
