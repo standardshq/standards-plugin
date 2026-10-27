@@ -23,12 +23,12 @@ The first tool call opens the Standards consent screen in your browser: sign in,
 | Path | What it is |
 |---|---|
 | `.mcp.json` | The `standards` MCP server, `https://api.standards.new/v1/mcp` (streamable HTTP, OAuth) |
-| `skills/standards/SKILL.md` | How Claude works in a Standards workspace: the schema as contract, exact vs ranked search, totals, safe writes, documents, memory |
+| `skills/standards/SKILL.md` | How Claude works in a Standards workspace: the eight tools and `<kind>:<id>` references, the schema as contract, exact vs ranked search, totals, safe writes, documents, memory |
 | `.claude-plugin/plugin.json` | Plugin manifest |
 | `.claude-plugin/marketplace.json` | Lets this repository act as its own marketplace |
 
 ## Permissions
 
-Claude sees only the tools your role allows, and every call is checked again against the object it touches. Deletes are soft and restorable, and the skill asks Claude to confirm each one with you first.
+Claude sees only the tools your role allows, narrowed by the access level you picked on the consent screen (Read, Write or Full, changeable later in Connected apps), and every call is checked again against the object it touches. Deletes are soft and restorable, and the skill asks Claude to confirm each one with you first.
 
 Support: contact@standards.new · Docs: [docs.standards.new](https://docs.standards.new)

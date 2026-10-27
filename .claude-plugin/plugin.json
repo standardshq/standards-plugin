@@ -1,6 +1,6 @@
 {
   "name": "standards",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Connect Claude to your Standards workspace — CRM, documents and memory with a data model your team declares — to search, count, create and update records and file documents, with the rights of your role.",
   "author": {
     "name": "standards.new",
