@@ -16,7 +16,7 @@ The first tool call opens the Standards consent screen in your browser: sign in,
 - "Which deals in negotiation haven't moved in 30 days? Group them by owner."
 - "Create a follow-up task for each contact I met at yesterday's event."
 - "Summarise the latest contract attached to ACME and tell me when it renews."
-- "From now on, call clients 'members' in your answers." (proposed to the workspace memory)
+- "I prefer my deal summaries in three bullet points." (kept in your workspace memory)
 
 ## What's inside
 
