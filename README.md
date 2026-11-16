@@ -23,7 +23,7 @@ The first tool call opens the Standards consent screen in your browser: sign in,
 | Path | What it is |
 |---|---|
 | `.mcp.json` | The `standards` MCP server, `https://api.standards.new/v1/mcp` (streamable HTTP, OAuth) |
-| `skills/standards/SKILL.md` | How Claude works in a Standards workspace: the eight tools and `<kind>:<id>` references, the schema as contract, exact vs ranked search, totals, safe writes, documents, memory |
+| `skills/standards/SKILL.md` | How Claude works in a Standards workspace: the tools and `<kind>:<id>` references, the schema as contract, exact vs ranked search, totals, safe writes, documents and uploads, memory, routines and agents, structure drafts |
 | `.claude-plugin/plugin.json` | Plugin manifest |
 | `.claude-plugin/marketplace.json` | Lets this repository act as its own marketplace |
 

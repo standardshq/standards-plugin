@@ -1,6 +1,6 @@
 ---
 name: standards
-description: Standards workspace work through the `standards` MCP tools — answering a question from workspace data, counting or totalling records, creating or updating records, reading or filing documents attached to a record, recalling or proposing workspace memory.
+description: Standards workspace work through the `standards` MCP tools — answering a question from workspace data, counting or totalling records, creating or updating records, reading or filing documents attached to a record, recalling or keeping workspace memory, running a routine or an agent, drafting a change to the workspace's structure.
 ---
 
 # Standards
@@ -16,14 +16,14 @@ Standards ([standards.new](https://standards.new)) is a business workspace — C
 | Attribute | A typed field on an object: text, richtext, number, checkbox, date, phone, currency, status, select, multiselect, location, user, relation, and a few more. Validated on every write. |
 | Record | One row of an object: a UUID, timestamps, a `version`, and its attributes. |
 | Document | A titled pack of files, always attached to one record, filed in that record's drive (folders + documents). |
-| Memory | Pages the workspace keeps about itself, each member, each record and recurring topics. Written by the workspace; agents read and propose. |
+| Memory | Pages the workspace keeps about itself, each member, each record and recurring topics, one dated line per fact. Agents read them and add lines. |
 | Role | What the connected member may read, create, update, delete, per object. Your tool list is already narrowed to it. |
 
 **The schema is the contract.** Members add attributes, objects and select options in the app at any time, so the schema you saw yesterday is a guess today. Every attribute name, type, required field and select option comes from reading `schema:<object>` in this session.
 
 ## Tools and references
 
-Eight tools at most: `search`, `query`, `read`, `write`, `edit_content`, `organize`, `delete`, `propose_memory`. All but `query` and `propose_memory` name things by **reference**, `<kind>:<id>`:
+Seven tools work on data: `search`, `query`, `read`, `write`, `edit_content`, `organize`, `delete`. `start` runs a routine or an agent, and four more draft the workspace's structure (see the last two sections). Your list holds only those the member's role allows. All but `query` name things by **reference**, `<kind>:<id>`:
 
 | Reference | Read it for |
 |---|---|
@@ -32,8 +32,10 @@ Eight tools at most: `search`, `query`, `read`, `write`, `edit_content`, `organi
 | `file:<uuid>` | A signed download `url`, valid 5 minutes. |
 | `schema:<object>` / `schema:*` | Attributes, types, required fields, select options and views / every object you can read. |
 | `memory:<name>` / `memory:*` | One memory page / the workspace profile and your own. |
-| `user:<id>` | A workspace member (only with people access). |
-| `guide:<kind>` | The full contract of a kind, with its pitfalls: `guide:record`, `guide:document`. |
+| `user:<id>` / `user:self` | A workspace member (only with people access) / the connected member. |
+| `skill:<name>` | A skill the workspace wrote for a specialized task: read it before that task. |
+| `agent:<id>` / `routine:<id>` | An agent's or a routine's setup; `include: ["runs"]` lists its runs. |
+| `guide:<kind>` | The full contract of a kind, with its pitfalls: `guide:record`, `guide:document`, `guide:schema`. |
 
 `search` returns references as each hit's `id`, so a hit goes straight into `read`. A bare id is refused with `REFERENCE_INVALID`: prefix it.
 
@@ -50,7 +52,7 @@ Done when every object you will touch is named exactly as the handshake names it
 Two ways to find records, and they answer different questions:
 
 - **Exact** — `query` with an `object` and `filters`. A complete read of the database: use it for "every deal in status Won", "contacts in 69003", anything you will list or count. Up to 1000 rows per call; paginate with `offset` until `hasMore` is false.
-- **Ranked** — `search` with free text ranks by relevance across records, documents and memory (`kinds`, `objects` narrow it). Use it to find "the ACME contract" or a person by name; its hit list is partial by design, so it answers *which one*, never *how many* or *all of them*.
+- **Ranked** — `search` with free text ranks by relevance across records, memory, members, agents and routines (`kinds`, `objects` narrow it). Use it to find "the ACME deal" or a person by name; its hit list is partial by design, so it answers *which one*, never *how many* or *all of them*. Snippets are excerpts: `read` a hit before answering from its content.
 
 Then:
 
@@ -69,17 +71,27 @@ Then:
 - Richtext (notes, descriptions) → `edit_content` with `target` `record:<id>` and the `attribute`: `replace` a passage that appears exactly once, or `insert` after one. Only the change travels, and a concurrent edit of the same passage is refused with `SCHEMA_CONFLICT` rather than overwritten.
 - Read back what you wrote when the user will act on it.
 
-**Deletes need the user's yes.** `delete` takes one reference per call: `record:<id>` is a soft delete, `document:<id>` archives the document and its files, both restorable. Each one is announced to the user with the record's name and confirmed before the call.
+**Deletes need the user's yes.** `delete` takes up to 100 references per call: `record:<id>` is a soft delete, `document:<id>` archives the document and its files, both restorable. Announce what will go, by name, and get the user's confirmation of that exact list before the call.
 
 ## Documents and files
 
 - `read` a `record:<id>` with `include: ["drive"]` for its folders and documents; a large drive answers `truncated` with a `next` cursor to pass back as `cursor`. `read` a `document:<id>` for its files and extracted text; `contentStatus: ocr_processing` means read again shortly.
 - `read` a `file:<id>` for its download URL, valid 5 minutes: fetch it right before use and keep it out of anything durable.
-- Filing goes through `organize`: `attach` (a `file:<id>` onto a `record:<id>`, optionally in a `folderPath`), `detach`, `create_folder`, `move` and `rename` (within the same drive), `init_structure` (a declared folder preset). There is no upload over MCP: `attach` takes a file already in Standards, so ask the user to upload when you only hold a local file.
+- Filing goes through `organize`: `attach` (a file onto a `record:<id>`, optionally in a `folderPath`), `detach`, `create_folder`, `move` and `rename` (within the same drive), `init_structure` (a declared folder preset).
+- `attach` takes a file three ways: `fileId: "file:<id>"` for one already in Standards; `file`, a `data:<type>;name=<file name>;base64,<bytes>` URI, up to 512 KiB; or, larger, `upload: { fileName, mimeType, size }`, which answers an HTTPS URL to `PUT` the bytes to and the `upload:<id>` to attach with afterwards.
+- `organize` with `file_under` files a record under another record of the same object (`parent: null` moves it back to the top level); the record and its sub-records take the parent's access.
 
 ## Memory
 
-`search` with `kinds: ["memory"]` finds pages by relevance; `read` `memory:<name>` opens one. When the user states a durable fact, preference or correction ("from now on…", "always…"), call `propose_memory` with the `learning`, the user's own words as `evidenceExcerpt`, and the `record` it is about when there is one. The workspace decides where it lands; tell the user it was proposed, not saved.
+`search` with `kinds: ["memory"]` finds pages by relevance; `read` `memory:<name>` opens one, and a `read` of up to 5 records brings each one's memory page along. When the user states a durable fact, preference or correction ("from now on…", "always…"), `write` with `action: "add"`, `ref` `memory:user:self` (the member) or `memory:record:<id>` (what it is about), and `data: { text, type, source }`: one sentence, the type the tool lists, and the reference it came from. The answer's `landedOn` names the page the line reached: name it when you tell the user. `rewrite` and `remove` change a line, with the `lineKey` and `version` of the page you read.
+
+## Routines and agents
+
+`search` with `kinds: ["routine"]` or `["agent"]` and no query lists them; `read` one for its setup, with `include: ["runs"]` for its runs. `start` with `target` `routine:<id>` or `agent:<id>`, and an optional `text` as its first message, runs it now, as its Run button does. Nothing reports back: read its runs to follow it.
+
+## Changing the workspace's structure
+
+Objects, attributes, views and pages change through a **draft** the member watches and publishes themselves; nothing reaches the workspace before that. `get_architect_draft` returns the draft and the `guard` to write against; `draft_schema` writes a change set, after a `read` of `guide:schema` (and `guide:view` or `guide:page` before a view or page block); `search_icons` returns valid icon names, never guess one. `discard_architect_draft` throws the whole draft away, the member's own edits included: only when they ask for exactly that.
 
 ## Refusals
 
